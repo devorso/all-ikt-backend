@@ -7,22 +7,25 @@ const axios = require("axios");
 const serviceStorage = require("./storage/service_storage");
 let apiGateway;
 const getMeteoInfo = async (city) => {
-  const response = await axios.default.get(
-    "https://api.openweathermap.org/data/2.5/weather?q=" +
-      city +
-      "&appid=bf15de267ae8c3621d091aac867c5e27"
-  );
-  console.log(response.data);
-  if (response.status === 404) {
-    return "";
-  }
-  return response.data;
+  const responseLocation = await axios.default.get('http://dataservice.accuweather.com/locations/v1/cities/search?q=' + 
+  city + 
+  '&language=fr&apikey=mVGA7ByftJzsjaVyW9gbZ4SxZqwJTmCk');
+    //mVGA7ByftJzsjaVyW9gbZ4SxZqwJTmCk
+    //http://dataservice.accuweather.com/locations/v1/cities/search?q=Metz&language=fr&apikey=mVGA7ByftJzsjaVyW9gbZ4SxZqwJTmCk
+    //http://dataservice.accuweather.com/forecasts/v1/daily/5day/135029?language=fr&metric=true&apikey=mVGA7ByftJzsjaVyW9gbZ4SxZqwJTmCk
+    const keyLocation = responseLocation.data[0].Key;
+    
+    const response = await axios.default.get('http://dataservice.accuweather.com/forecasts/v1/daily/5day/' + keyLocation + '?language=fr&metric=true&apikey=mVGA7ByftJzsjaVyW9gbZ4SxZqwJTmCk');
+    console.log(response.data);
+    if (response.status === 404) {
+        return ""
+    }
+    return response.data;
 };
 
 app.use(
-  cors({
-    origin: apiGateway,
-  })
+  cors({origin: apiGateway}
+    )
 );
 
 app.get("/:cityName", async (req, res, next) => {
