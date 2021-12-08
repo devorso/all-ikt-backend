@@ -181,27 +181,34 @@ router.post("/decouverte", async (req, res, next) => {
     headers
   );
   console.log("pef" + pref);
+  try {
   locationInfo = await axios.get(
     apiGateway + "/location-service/location",
     headers
   );
+  }catch(err_location){
+    console.log(err_location)
+  }
   location = locationInfo.data.city;
   const { allow_regions_only, exclude_city } = pref.data;
   //We test in 2000 cities
   let i = 0;
-  while (!prefOk && i < 2) {
+  while (!prefOk && i < 10) {
     try {
       city = await axios.get(
         apiGateway + "/cityinfo-service/randomCity",
         headers
       );
       cityInfo = city.data;
-
+      console.log(cityInfo)
       let region = await axios.get(
         apiGateway + "/cityinfo-service/" + cityInfo + "/region",
         headers
       );
       let regionData = region.data;
+      console.log(regionData)
+      console.log(exclude_city)
+      console.log(allow_regions_only)
       if (allow_regions_only.length === 0) {
         if (exclude_city.length == 0) {
           prefOk = true;
@@ -210,21 +217,26 @@ router.post("/decouverte", async (req, res, next) => {
         }
       } else {
         if (
-          allow_regions_only.includes(regionData) &&
+          (regionData.result.region === null || allow_regions_only.includes(regionData.result.region)) &&
           !exclude_city.includes(cityInfo)
         ) {
+          
           prefOk = true;
         }
       }
-      i++;
-      console.log(i);
+      if (!prefOk){
+        i++;
+      }
+      
+ 
     } catch (err) {
+      console.log(err)
       return res.status(500).json({ error: "Error in random city" });
     }
   }
 
-  cityInfo = location;
-  let newsInfo = await axios.get(
+  let newsInfo
+ try {  newsInfo = await axios.get(
     apiGateway + "/news-service/" + cityInfo,
     headers
   );
@@ -234,10 +246,21 @@ router.post("/decouverte", async (req, res, next) => {
     headers
   );
   //allaboutcity and flightbooking, flixbus need
-
+  }catch(err){
+    console.log(err)
+  }
+  let allabout;
+  try {
+    allabout = await axios.get(
+      apiGateway + "/allaboutcity-service/" + cityInfo,
+      headers
+    );
+  } catch (err) {
+    console.log("allaboutcity");
+  }
   return res
     .status(200)
-    .json({ ...meteoInfo.data, city: cityInfo, ...newsInfo.data });
+    .json({ ...meteoInfo.data, city: cityInfo, ...newsInfo.data,      allaboutcity: { ...allabout.data } });
   // random city using preferences.
 });
 

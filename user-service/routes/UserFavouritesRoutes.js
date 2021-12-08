@@ -6,8 +6,17 @@ const User = require('../models/User')
 router.post("/addFavourite", async (req, res, next) => {
   const { userId, city } = req.body;
   let user = await User.findById({ _id: userId });
+  let exist = false
+  
   if (user.favouritesCity !== undefined && user.favouritesCity.length > 0) {
-    user.favouritesCity.push(city);
+    for (let f in user.favouritesCity) {
+      if (f === city){
+        exist = true
+      }
+    }
+    if (!exist) {
+      user.favouritesCity.push(city);
+    }
   } else {
     user.favouritesCity = [city];
   }
