@@ -7,6 +7,8 @@ start cmd.exe /k "cd allaboutcity-service && npm start"
 start cmd.exe /k "cd location-service && npm start"
 start cmd.exe /k "cd cityinfo-service && npm start"
 start cmd.exe /k "cd search-allaboutcity-service && npm start"
+start cmd.exe /k "cd news-service && npm start"
+
 
 echo All services are started. IKnowTravel started to help people !
 
