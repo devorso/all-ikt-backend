@@ -1,0 +1,1 @@
+{"api-gateway":"http://localhost:8000","location-service":"http://localhost:3058","cityinfo-service":"http://localhost:3035","user-service":"http://localhost:3031","meteo-service":"http://localhost:3037","search-allaboutcity-service":"http://localhost:30001","news-service":"http://localhost:3038","allaboutcity-service":"http://localhost:3032"}
