@@ -10,7 +10,7 @@ const schema = new mongoose.Schema(
     lastname:   { type: String, default:''}, 
     username:  { type: String, default:''}, 
     email:   { type: String, default:''},  
-    bithday:  { type: mongoose.Schema.Types.Date, default:''},  
+    birthday:  { type: mongoose.Schema.Types.Date, default:''},  
     city:   { type: String, default:''},  
     numberPhone:   { type: String, default:''},  
     password:    { type: String, default:''},  

@@ -17,7 +17,7 @@ const getNews = async (city) => {
 };
 
 
-app.use(cors())
+app.use(cors({origin: apiGateway}))
 app.use((req, res, next) => {
     if (req.headers.authorization === undefined) {
         return res.status(500).json({message:'Authorization field empty !'});
