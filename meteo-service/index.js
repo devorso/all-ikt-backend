@@ -11,18 +11,19 @@ const getMeteoInfo = async (city) => {
   try {
     const responseLocation = await axios.default.get('http://dataservice.accuweather.com/locations/v1/cities/search?q=' + 
   city + 
-  '&language=fr&apikey=mVGA7ByftJzsjaVyW9gbZ4SxZqwJTmCk');
+  '&language=fr&apikey=xtRCynAdQIqGkTGcGKPYqMgUcUwnzalf');
     //mVGA7ByftJzsjaVyW9gbZ4SxZqwJTmCk
     //http://dataservice.accuweather.com/locations/v1/cities/search?q=Metz&language=fr&apikey=mVGA7ByftJzsjaVyW9gbZ4SxZqwJTmCk
     //http://dataservice.accuweather.com/forecasts/v1/daily/5day/135029?language=fr&metric=true&apikey=mVGA7ByftJzsjaVyW9gbZ4SxZqwJTmCk
     const keyLocation = responseLocation.data[0].Key;
     
-     response = await axios.default.get('http://dataservice.accuweather.com/forecasts/v1/daily/5day/' + keyLocation + '?language=fr&metric=true&apikey=mVGA7ByftJzsjaVyW9gbZ4SxZqwJTmCk');
+     response = await axios.default.get('http://dataservice.accuweather.com/forecasts/v1/daily/5day/' + keyLocation + '?language=fr&metric=true&apikey=xtRCynAdQIqGkTGcGKPYqMgUcUwnzalf');
     console.log(response.data);
     if (response.status === 404) {
         return ""
     }
   }catch(err){
+    console.log(err)
     return {}
   }
     return response.data;
